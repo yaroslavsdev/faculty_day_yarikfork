@@ -28,8 +28,6 @@ fun calculate(a: Double, b: Double, operation: OperationType = OperationType.ADD
 @Suppress("ReturnCount")
 fun String.calculate(): Double? {
     var nums = this.split(" ")
-    var a: Double? = null
-    var b: Double? = null
     var oper: OperationType? = when (nums[1]) {
         "+" -> OperationType.ADD
         "-" -> OperationType.SUBTRACT
@@ -37,8 +35,8 @@ fun String.calculate(): Double? {
         "/" -> OperationType.DIVIDE
         else -> null
     }
-    a = nums[0].toDoubleOrNull()
-    b = nums[2].toDoubleOrNull()
+    var a: Double? = nums[0].toDoubleOrNull()
+    var b: Double? = nums[2].toDoubleOrNull()
 
     if (a == null || b == null || oper == null) {
         println("Error")
