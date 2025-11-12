@@ -5,8 +5,8 @@ package ru.tbank.education.school.lesson1
  */
 fun sumEvenNumbers(numbers: Array<Int>): Int {
     var sum = 0
-    for (i in numbers) {
-        if (i % 2 == 0) sum += i
+    for (item in numbers) {
+        if (item % 2 == 0) sum += item
     }
     return sum
 }
