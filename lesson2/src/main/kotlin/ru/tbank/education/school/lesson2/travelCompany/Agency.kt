@@ -1,15 +1,16 @@
 package ru.tbank.education.school.lesson2.travelCompany
 
 class Agency {
-    private val allTours = mutableListOf<TourProduct>()
+    private val tours = mutableListOf<TourProduct>()
 
     fun addTour(tour: TourProduct) {
-        allTours.add(tour)
+        tours.add(tour)
     }
 
-    fun displayTours() {
-        for (tour in allTours) {
-            println(tour)
+    fun showTours() {
+        println("Available tours:")
+        for (tour in tours) {
+            println(tour.info())
         }
     }
 }

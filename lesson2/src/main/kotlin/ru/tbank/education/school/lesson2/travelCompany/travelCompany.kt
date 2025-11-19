@@ -14,6 +14,6 @@ fun main() {
 
     agency.addTour(firstPackage)
     agency.addTour(secondPackage)
-
     agency.addTour(excursionToTula)
+    agency.showTours()
 }
