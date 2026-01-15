@@ -29,6 +29,8 @@ fun task() {
             )
         )
     )
+    val orders = users.flatMap { it.orders }
+    println(orders)
 }
 
 
@@ -36,6 +38,9 @@ fun task() {
 fun task2() {
     val months = listOf("Янв", "Фев", "Мар", "Апр", "Май")
     val revenue = listOf(1000, 1200, 800, 1400, 1300)
+
+    val pairs = months.zip(revenue)
+    println(pairs)
 }
 
 // Задание 3 - выведите id всех заказов, которые были доставлены и оплачены на сумму > 1000
@@ -46,6 +51,8 @@ fun task3() {
         Order(id = 3, product = "Рюкзак", amount = 1000, isPaid = true, isDelivered = true),
         Order(id = 4, product = "Кружка", amount = 500, isPaid = false, isDelivered = false)
     )
+    val specialOrders = orders.filter { it.isPaid && it.isDelivered && it.amount > 1000 }
+    println(specialOrders)
 }
 
 
@@ -64,6 +71,8 @@ fun task4() {
         Student(name = "Галина", group = "A-03"),
         Student(name = "Денис", group = "A-02")
     )
+    val groups = students.groupBy { it.group }
+    println(groups)
 }
 
 data class ApiResponse(val code: Int, val message: String)
@@ -76,7 +85,11 @@ fun task5() {
         ApiResponse(code = 200, message = "OK"),
         ApiResponse(code = 200, message = "Cached OK")
     )
+    val first = responses.firstOrNull { it.code == 200 }
+    val last = responses.firstOrNull { it.code == 500 }
 
+    println(first)
+    print(last)
 }
 
 data class Movie(val title: String, val rating: Double)
@@ -90,6 +103,9 @@ fun task6() {
         Movie(title = "Тёмный рыцарь", rating = 9.1),
         Movie(title = "Мементо", rating = 8.5)
     )
+
+    val best = movies.sortedBy { it.rating }
+    println(best.take(3))
 }
 
 // Задание 7 - добавить логирование операций
@@ -107,7 +123,11 @@ data class Client(
 )
 
 
-fun <A, B, C> ((A) -> B).andThen(next: (B) -> C): (A) -> C = { a -> next(this(a)) }
+infix fun <A, B, C> ((A) -> B).andThen(next: (B) -> C): (A) -> C = { a -> next(this(a)) }
+
+fun trim(field: String) = field.replace(" ", "")
+fun lower(field: String) = field.lowercase()
+fun validate(field: String) = if (field.isEmpty()) null else field
 
 // Задание 8 - хочу написать функции для валидации полей
 fun task8() {
@@ -116,16 +136,20 @@ fun task8() {
         Client(name = "  Мария  ", email = "maria@mail.ru", phone = "8-800-555-35-35"),
         Client(name = " ", email = "test@", phone = "000"),
     )
+    val name = ""
+    val validationFunc = ::trim andThen ::lower andThen ::validate
+
 }
+
 
 // Задание 9 - просто смотрим на примеры
 fun task9() {
     val student = "Коля" to 14  // Создаем пару (Имя, Возраст)
     val subject = "Математика" to 5  // Создаем пару (Предмет, Оценка)
+    // to -> make pair
 
     println("Ученик: ${student.first}, возраст: ${student.second}")
     println("Предмет: ${subject.first}, оценка: ${subject.second}")
-
 
 
     print("Обратный отсчёт: ")
@@ -147,7 +171,23 @@ fun task9() {
 }
 
 // Задание 10 - напишите функцию деления с использованием runCatching и Result<T>, реализуйте вывод ошибки и реузльтата
+fun riskyOperation(x: Int, y: Int) : Result<Int> =
+    runCatching {
+        x / y
+    }
+
 fun task10() {
+    val result = riskyOperation(1, 0)
+    result.onSuccess {
+        println(it)
+    }.onFailure {
+        println("Fatal error")
+    }
+}
+
+fun runTwice(action: () -> Unit) {
+    action.invoke()
+    action.invoke()
 }
 
 // Задание 11 - пример
@@ -162,6 +202,7 @@ fun task11() {
         }
     }
     sayHello.invoke()
+    runTwice { sayHello }
 }
 
 val lambda = object : Function0<Unit> {
@@ -187,6 +228,6 @@ interface Function2<in P1, in P2, out R> {
     fun invoke(p1: P1, p2: P2): R
 }
 
-
 fun main() {
+    task10()
 }

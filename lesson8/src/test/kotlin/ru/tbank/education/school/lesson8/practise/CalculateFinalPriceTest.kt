@@ -1,5 +1,9 @@
 package ru.tbank.education.school.lesson8.practise
 
+import com.tngtech.archunit.lang.ArchRule
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Test
+
 /**
  *
  * Сценарии для тестирования:
@@ -15,3 +19,30 @@ package ru.tbank.education.school.lesson8.practise
  *    - Скидка вне диапазона: discountPercent < 0 или > 100 → IllegalArgumentException.
  *    - Налог вне диапазона: taxPercent < 0 или > 30 → IllegalArgumentException.
  */
+
+
+class CalculateFinalPriceTest {
+
+    @Test
+    fun `valid data should return true`() {
+        Assertions.assertTrue(calculateFinalPrice(1000.0, 10, 20) == 1000 * 0.9 * 1.2)
+        Assertions.assertTrue(calculateFinalPrice(1000.0, 0, 20) == 1000 * 1.2)
+        Assertions.assertTrue(calculateFinalPrice(1000.0, 10, 0) == 1000 * 0.9)
+        Assertions.assertTrue(calculateFinalPrice(700.0, 0, 0) == 700.0)
+    }
+
+    @Test
+    fun `invalid data should return false`() {
+        Assertions.assertThrows(IllegalArgumentException::class.java) {
+            calculateFinalPrice(-1000.0, 10, 20)
+        }
+
+        Assertions.assertThrows(IllegalArgumentException::class.java) {
+            calculateFinalPrice(1000.0, -10, 20)
+        }
+
+        Assertions.assertThrows(IllegalArgumentException::class.java) {
+            calculateFinalPrice(1000.0, 10, 31)
+        }
+    }
+}
