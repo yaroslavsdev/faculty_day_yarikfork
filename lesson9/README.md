@@ -36,19 +36,20 @@ ls logs -S | head -n 1 > biglog.txt
 ```bash
 find logs -type f -name "*.logs" | wc -l > log_count.txt
 ```
+wc -l - подсчёт количества строк
 
 ## Задание 6. Поиск конфигурационных параметров
 Найти во всех config/*.conf строки, содержащие слово "host", и записать в host_params.txt.
 
 ```bash
-TODO()
+grep "host" logs/config/*.conf > host_params.txt
 ```
 
 ## Задание 7. Создание резервного архива конфигов
 Создать zip-архив config_backup.zip, содержащий все файлы из config/.
 
 ```bash
-TODO()
+zip -r config_backup.zip logs/config
 ```
 
 ## Задание 8. Создание общего резервного архива
