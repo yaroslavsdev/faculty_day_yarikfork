@@ -159,9 +159,29 @@ fun task6() {
 
 fun task7() {
     val inputList = listOf("math:Ivan", "bio:Olga", "math:Max", "bio:Ivan", "cs:Olga")
-    val pattern = Regex("""([a-zA-z]):([a-zA-z])""")
-    val result = mutableMapOf<String, String>()
+    val pattern = Regex("""([A-Za-z]+):([A-Za-z]+)""")
+    val result = mutableMapOf<String, MutableList<String>>()
+    inputList.forEach {
+        if (pattern.containsMatchIn(it)) {
+            val m = pattern.find(it)!!
+            val subject = m.groupValues[1]
+            val name = m.groupValues[2]
 
+            if (result[subject] == null) {
+                result[subject] = mutableListOf(name)
+            } else {
+                result[subject]!!.add(name)
+            }
+        }
+    }
+
+    result.forEach {
+        print("${it.key}: ")
+        it.value.forEach {
+            print("${it} ")
+        }
+        print("\n")
+    }
 }
 
 
