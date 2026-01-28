@@ -249,11 +249,37 @@ fun main() {
     }
 
     if (formatError.isNotEmpty()) {
-        println("Ошибки формата (неполные данные): ${formatError.joinToString(", ")}")
+        println("Ошибки формата (неполные данные): ${formatError.sorted().joinToString(", ")}")
     }
 
     if (logicError.isNotEmpty()) {
-        println("Ошибки логики (доставка раньше отправки): ${logicError.joinToString(", ")}")
+        println("Ошибки логики (доставка раньше отправки): ${logicError.sorted().joinToString(", ")}")
     }
 
+    val counter = mutableMapOf<Int, Int>()
+    for (action in actions) {
+        action.value.forEach {
+            if (it.status == "delivered") {
+                val time = it.dt
+                val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
+                val m = LocalDateTime.parse(time, formatter).hour
+                if (counter.contains(m)) {
+                    counter[m] = counter[m]!! + 1
+                } else {
+                    counter[m] = 1
+                }
+            }
+        }
+    }
+
+    var bestCount = 0
+    var ans = 0
+    counter.forEach {
+        if (it.value > bestCount) {
+            ans = it.key
+            bestCount = it.value
+        }
+    }
+
+    println("Больше всего доставок в: ${ans}h")
 }
