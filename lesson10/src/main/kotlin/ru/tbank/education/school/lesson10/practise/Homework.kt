@@ -272,7 +272,6 @@ fun main() {
         }
     }
 
-
     var bestCount = 0
     var ans = 0
     counter.forEach {
